@@ -5,19 +5,18 @@ import { HashRouter, Route, Switch } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import Spinner from './Components/Spinner'
+
 // Containers
 const DefaultLayout = React.lazy(() => import("./AuthRoute"));
 
 // Pages
 const Login = React.lazy(() => import("./Pages/Login"));
 
-function Spinner() {
-  return <div>Loading....</div>;
-}
 const App = () => {
   return (
     <HashRouter>
-      <React.Suspense fallback={<Spinner />}>
+      <React.Suspense fallback={<Spinner loading/>}>
         <Switch>
           <Route
             exact

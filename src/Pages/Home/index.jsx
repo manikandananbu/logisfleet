@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
 import DatePicker from "../../Components/DatePicker";
 import SearchBar from "../../Components/SearchBar";
+import Spinner from "../../Components/Spinner";
 
 import { columns } from "./constants";
 
@@ -31,9 +32,10 @@ const useStyles = makeStyles({
     "& .MuiIconButton-root": {
       color: "white",
     },
-    " & .MuiDataGrid-root .MuiDataGrid-columnHeader:focus, .MuiDataGrid-root .MuiDataGrid-cell:focus": {
-      outline: "0px",
-    },
+    " & .MuiDataGrid-root .MuiDataGrid-columnHeader:focus, .MuiDataGrid-root .MuiDataGrid-cell:focus":
+      {
+        outline: "0px",
+      },
   },
   dataGrid: {
     margin: "0px 50px",
@@ -45,6 +47,7 @@ const useStyles = makeStyles({
 export default function OrderSortingGrid() {
   const history = useHistory();
 
+  const [loading, setLoading] = useState(false);
   const [jobData, setJobData] = useState();
   const [pageSize, setPageSize] = useState(50);
   const [searchQuery, setSearchQuery] = useState("");
@@ -54,6 +57,7 @@ export default function OrderSortingGrid() {
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       const response = await axios
         .get(
           `https://test-api.logisfleet.com/job?currentPage=1&pageSize=${pageSize}&searchQuery=${searchQuery}&fromDate=2021-04-01&toDate=2021-07-31&sortColumn=${
@@ -65,11 +69,8 @@ export default function OrderSortingGrid() {
             },
           }
         )
-        .then((res) => {
-          return res;
-        });
-
       setJobData(response.data);
+      setLoading(false)
     }
     fetchData();
   }, [pageSize, token, searchQuery, sortModel]);
@@ -204,6 +205,8 @@ export default function OrderSortingGrid() {
           ))}
         </ButtonGroup>
       </div>
+
+      <Spinner loading={loading}></Spinner>
     </div>
   );
 }

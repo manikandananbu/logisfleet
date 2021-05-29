@@ -2,18 +2,16 @@ import React, { Fragment } from "react";
 
 import { Route, Redirect, Switch } from "react-router-dom";
 
+import Spinner from './Components/Spinner'
+
 // Containers
 const DefaultLayout = React.lazy(() => import("./Pages/Home"));
-
-function Spinner() {
-  return <div>Loading....</div>;
-}
 
 function AuthRoute() {
   return (
     <Fragment>
       {localStorage.getItem("logisfleet_token") ? (
-        <React.Suspense fallback={<Spinner />}>
+        <React.Suspense fallback={<Spinner loading/>}>
           <Switch>
             <Route
               path="/home"
