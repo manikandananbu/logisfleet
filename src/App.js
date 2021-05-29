@@ -2,6 +2,8 @@
 
 import React from "react";
 import { HashRouter, Route, Switch } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Containers
 const DefaultLayout = React.lazy(() => import("./AuthRoute"));
@@ -29,6 +31,7 @@ const App = () => {
             render={(props) => <DefaultLayout {...props} />}
           />
         </Switch>
+        <ToastContainer autoClose = {2500}/>
       </React.Suspense>
     </HashRouter>
   );

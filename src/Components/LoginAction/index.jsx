@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
+import { Formik } from "formik";
+import * as Yup from "yup";
 import {
   Box,
   Button,
@@ -12,78 +14,115 @@ import LockIcon from "@material-ui/icons/Lock";
 
 import useStyles from "./styles";
 
+const Schema = Yup.object().shape({
+  email: Yup.string().email().required("Enter your Email"),
+  password: Yup.string().required("Enter your password"),
+});
+
 export default function LoginAction({ onLogin }) {
   const classes = useStyles();
-
-  const [userEmail, setUserEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  function handleOnLogin() {
-    const user = {
-      email: userEmail,
-      password: password,
-    };
-    onLogin(user);
-  }
-
   return (
     <Grid item xs={6}>
-      <Box display="grid" top="15%" position="absolute" right="10%">
-        <Typography className={classes.typography} variant="h4">
-          Sign into your account
-        </Typography>
-        <TextField
-          className={classes.textField}
-          id="email"
-          label="Email address"
-          variant="standard"
-          placeholder="example@gmail.com"
-          value={userEmail}
-          onChange={(e) => setUserEmail(e.target.value)}
-          inputProps={{
-            className: classes.input,
-          }}
-          InputProps={{
-            className: classes.icon,
-            startAdornment: (
-              <InputAdornment position="start">
-                <MailIcon color="action" />
-              </InputAdornment>
-            ),
-          }}
-        />
-        <TextField
-          className={classes.textField}
-          id="password"
-          label="Password"
-          variant="standard"
-          placeholder="******"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          inputProps={{
-            className: classes.input,
-          }}
-          InputProps={{
-            className: classes.icon,
-            startAdornment: (
-              <InputAdornment position="start">
-                <LockIcon color="action" />
-              </InputAdornment>
-            ),
-          }}
-        />
-        <Button
-          className={classes.button}
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={handleOnLogin}
-        >
-          Login
-        </Button>
-      </Box>
+      <Formik
+        initialValues={{
+          email: "",
+          password: "",
+        }}
+        validationSchema={Schema}
+        onSubmit={(values, { setSubmitting }) => {
+          setTimeout(() => {
+            setSubmitting(false);
+          }, 500);
+
+          onLogin(values)
+        }}
+      >
+        {(props) => {
+          const {
+            values,
+            touched,
+            errors,
+            isSubmitting,
+            handleChange,
+            handleSubmit,
+          } = props;
+          return (
+            <form onSubmit={handleSubmit}>
+              <Box display="grid" top="15%" position="absolute" right="10%">
+                <Typography className={classes.typography} variant="h4">
+                  Sign into your account
+                </Typography>
+                <TextField
+                  className={classes.textField}
+                  id="email"
+                  label="Email address"
+                  variant="standard"
+                  placeholder="example@gmail.com"
+                  value={values.email}
+                  onChange={handleChange}
+                  error={Boolean(errors.email) && touched.email}
+                  inputProps={{
+                    className: classes.input,
+                  }}
+                  InputProps={{
+                    className: classes.icon,
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <MailIcon color="action" />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+
+                {errors.email && touched.email && (
+                  <Typography className={classes.error}>
+                    {errors.email}
+                  </Typography>
+                )}
+
+                <TextField
+                  className={classes.textField}
+                  id="password"
+                  label="Password"
+                  variant="standard"
+                  placeholder="******"
+                  type="password"
+                  error={Boolean(errors.password) && touched.password}
+                  value={values.password}
+                  onChange={handleChange}
+                  inputProps={{
+                    className: classes.input,
+                  }}
+                  InputProps={{
+                    className: classes.icon,
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <LockIcon color="action" />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+
+                {errors.password && touched.password && (
+                  <Typography className={classes.error}>
+                    {errors.password}
+                  </Typography>
+                )}
+                <Button
+                  className={classes.button}
+                  disabled={isSubmitting}
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                >
+                  Login
+                </Button>
+              </Box>
+            </form>
+          );
+        }}
+      </Formik>
     </Grid>
   );
 }
