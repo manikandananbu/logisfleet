@@ -10,8 +10,8 @@ export default function Button({ setFromDate, setToDate }) {
     <MuiButton
       classes={{ root: classes.button }}
       onClick={() => {
-        setFromDate(null);
-        setToDate(null);
+        setFromDate('');
+        setToDate('');
       }}
     >
       CLEAR DATE FILTER

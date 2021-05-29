@@ -26,20 +26,26 @@ export default function OrderSortingGrid() {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const response = await axios.get(
-        `https://test-api.logisfleet.com/job?currentPage=1&pageSize=${pageSize}&searchQuery=${searchQuery}&sortColumn=${
-          sortModel?.field || ""
-        }&sortDir=${
-          sortModel?.sort || ""
-        }&fromDate=${fromDate}&toDate=${toDate}`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-      setJobData(response.data);
-      setLoading(false);
+      await axios
+        .get(
+          `https://test-api.logisfleet.com/job?currentPage=1&pageSize=${pageSize}&searchQuery=${searchQuery}&sortColumn=${
+            sortModel?.field || ""
+          }&sortDir=${
+            sortModel?.sort || ""
+          }&fromDate=${fromDate}&toDate=${toDate}`,
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        )
+        .then((res) => {
+          setJobData(res.data);
+          setLoading(false);
+        })
+        .catch(() => {
+          setLoading(false);
+        });
     }
     fetchData();
   }, [pageSize, token, searchQuery, sortModel, fromDate, toDate]);
