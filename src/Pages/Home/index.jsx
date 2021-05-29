@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Typography, TablePagination } from "@material-ui/core";
+import { toast } from "react-toastify";
+import { useHistory } from "react-router-dom";
+import { Typography, TablePagination, Button } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
 import { makeStyles } from "@material-ui/styles";
 
@@ -56,6 +58,8 @@ export default function OrderSortingGrid({ jobData }) {
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [page, setPage] = useState(0);
 
+  const history = useHistory();
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -67,17 +71,50 @@ export default function OrderSortingGrid({ jobData }) {
 
   const classes = useStyles();
 
+  function handleOnLogOut() {
+    localStorage.removeItem("logisfleet_token");
+    history.push("./login");
+    toast.success("Log out  Successfully");
+  }
+
   return (
     <div className={classes.root}>
-      <Typography
-        variant="h4"
-        style={{
-          textAlign: "center",
-          color: "#322441",
-        }}
-      >
-        Report
-      </Typography>
+      <div style={{ display: "flex" }}>
+        <Typography
+          variant="h4"
+          style={{
+            textAlign: "end",
+            color: "#322441",
+            flexBasis: "50%",
+          }}
+        >
+          Report
+        </Typography>
+
+        <div
+          style={{
+            flexBasis: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Button
+            style={{
+              borderRadius: "100px",
+              backgroundColor: "#7118be",
+              marginRight: 10,
+              textTransform: 'capitalize',
+            }}
+            type="submit"
+            onClick={handleOnLogOut}
+            variant="contained"
+            color="primary"
+          >
+            Log Out
+          </Button>
+        </div>
+      </div>
       <div
         style={{
           display: "flex",
