@@ -21,7 +21,7 @@ export default function Login() {
       .post(`https://test-api.logisfleet.com/auth/login`, user)
       .then((res) => {
         toast.success("Login Successfully");
-        localStorage.setItem("logisfleet_token", res);
+        localStorage.setItem("logisfleet_token", res.data);
         history.push("/");
       })
       .catch((error) => {
