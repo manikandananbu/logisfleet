@@ -40,6 +40,7 @@ export default function SearchBar({ setSearchQuery }) {
       <InputBase
         className={classes.input}
         onChange={handleOnChange}
+        onBlur={handleOnSearch}
         placeholder="Search"
       />
       <IconButton
