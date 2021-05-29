@@ -1,4 +1,4 @@
-export const columns = [
+const columns = [
   {
     field: "jobNumber",
     headerName: "Job Number",
@@ -91,3 +91,5 @@ export const columns = [
     width: 200,
   },
 ];
+
+export default columns;
