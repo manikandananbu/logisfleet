@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -12,16 +12,24 @@ import LockIcon from "@material-ui/icons/Lock";
 
 import useStyles from "./styles";
 
-export default function LoginAction() {
+export default function LoginAction({ onLogin }) {
   const classes = useStyles();
+
+  const [userEmail, setUserEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  function handleOnLogin() {
+    const user = {
+      email: userEmail,
+      password: password,
+    };
+    onLogin(user);
+  }
 
   return (
     <Grid item xs={6}>
       <Box display="grid" top="15%" position="absolute" right="10%">
-        <Typography
-          className={classes.typography}
-          variant="h4"
-        >
+        <Typography className={classes.typography} variant="h4">
           Sign into your account
         </Typography>
         <TextField
@@ -30,8 +38,10 @@ export default function LoginAction() {
           label="Email address"
           variant="standard"
           placeholder="example@gmail.com"
+          value={userEmail}
+          onChange={(e) => setUserEmail(e.target.value)}
           inputProps={{
-            className: classes.input
+            className: classes.input,
           }}
           InputProps={{
             className: classes.icon,
@@ -49,8 +59,10 @@ export default function LoginAction() {
           variant="standard"
           placeholder="******"
           type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           inputProps={{
-            className: classes.input
+            className: classes.input,
           }}
           InputProps={{
             className: classes.icon,
@@ -67,6 +79,7 @@ export default function LoginAction() {
           fullWidth
           variant="contained"
           color="primary"
+          onClick={handleOnLogin}
         >
           Login
         </Button>

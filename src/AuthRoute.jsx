@@ -16,10 +16,12 @@ function AuthRoute() {
         <React.Suspense fallback={<Spinner />}>
           <Switch>
             <Route
-              path="/"
+              path="/home"
               name="Home"
               render={(props) => <DefaultLayout {...props} />}
             />
+
+            <Route exact path="/" render={() => <Redirect to="/home" />} />
           </Switch>
         </React.Suspense>
       ) : (

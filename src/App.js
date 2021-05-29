@@ -7,7 +7,7 @@ import { HashRouter, Route, Switch } from "react-router-dom";
 const DefaultLayout = React.lazy(() => import("./AuthRoute"));
 
 // Pages
-const Login = React.lazy(() => import("./App"));
+const Login = React.lazy(() => import("./Pages/Login"));
 
 function Spinner() {
   return <div>Loading....</div>;
