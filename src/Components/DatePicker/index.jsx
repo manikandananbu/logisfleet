@@ -45,6 +45,7 @@ export default function ResponsiveDateRangePicker() {
                 classes: { root: classes.text },
               }}
               {...startProps}
+              helperText=""
             />
             <Box sx={{ mx: 2 }}> to </Box>
             <TextField
@@ -53,6 +54,7 @@ export default function ResponsiveDateRangePicker() {
                 classes: { root: classes.text },
               }}
               {...endProps}
+              helperText=""
             />
           </Fragment>
         )}

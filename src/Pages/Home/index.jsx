@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import { Typography, TablePagination, Button } from "@material-ui/core";
-import { DataGrid } from "@material-ui/data-grid";
+import { XGrid } from "@material-ui/x-grid";
 import { makeStyles } from "@material-ui/styles";
 
 import DatePicker from "../../Components/DatePicker";
@@ -46,6 +46,12 @@ const useStyles = makeStyles({
     "& .MuiDataGrid-row.Mui-odd": {
       backgroundColor: "rgb(206, 206, 206)",
     },
+    "& .MuiIconButton-root": {
+      color: "white",
+    },
+    " & .MuiDataGrid-root .MuiDataGrid-columnHeader:focus, .MuiDataGrid-root .MuiDataGrid-cell:focus": {
+      outline: "0px",
+    },
   },
   dataGrid: {
     margin: "0px 50px",
@@ -68,6 +74,21 @@ export default function OrderSortingGrid({ jobData }) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  useLayoutEffect(() => {
+    const children = [
+      ...(document.getElementsByClassName("MuiDataGrid-main")[0]?.children ||
+        []),
+    ];
+
+    const element = children.find((child) =>
+      child.innerText.includes("Material-UI X Unlicensed product")
+    );
+
+    if (!!element) {
+      element.hidden = true;
+    }
+  });
 
   const classes = useStyles();
 
@@ -119,22 +140,27 @@ export default function OrderSortingGrid({ jobData }) {
         style={{
           display: "flex",
           height: "40px",
-          margin: "30px 30px 50px",
+          margin: "30px 50px 50px",
         }}
       >
         <SearchBar />
         <DatePicker />
       </div>
-      <DataGrid
+      <XGrid
         className={classes.dataGrid}
         columns={columns}
+        id="jobId"
         disableColumnMenu
         hideFooterPagination
-        rows={rows}
+        rows={(jobData?.data || []).map((data) => ({
+          ...data,
+          id: data.jobId,
+        }))}
+        hideFooter
       />
       <TablePagination
         component="div"
-        count={rows.length}
+        count={(jobData?.data || []).length}
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
         page={page}
