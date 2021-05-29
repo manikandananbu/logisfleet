@@ -40,7 +40,7 @@ const useStyles = makeStyles({
   dataGrid: {
     margin: "0px 50px",
     backgroundColor: "rgb(255, 255, 255)",
-    height: "calc(100% - 220px)",
+    height: "calc(100% - 240px)",
   },
 });
 
@@ -106,7 +106,7 @@ export default function OrderSortingGrid() {
 
   return (
     <div className={classes.root}>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", marginTop: 20 }}>
         <Typography
           variant="h4"
           style={{
