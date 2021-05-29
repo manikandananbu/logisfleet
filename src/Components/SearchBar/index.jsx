@@ -11,6 +11,8 @@ const useStyles = makeStyles((theme) => ({
     width: 400,
     backgroundColor: "inherit !important",
     marginRight: 30,
+    marginTop: 15,
+    height: 40,
   },
   input: {
     marginLeft: theme.spacing(1),

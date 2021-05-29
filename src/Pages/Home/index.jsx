@@ -32,10 +32,9 @@ const useStyles = makeStyles({
     "& .MuiIconButton-root": {
       color: "white",
     },
-    " & .MuiDataGrid-root .MuiDataGrid-columnHeader:focus, .MuiDataGrid-root .MuiDataGrid-cell:focus":
-      {
-        outline: "0px",
-      },
+    " & .MuiDataGrid-root .MuiDataGrid-columnHeader:focus, .MuiDataGrid-root .MuiDataGrid-cell:focus": {
+      outline: "0px",
+    },
   },
   dataGrid: {
     margin: "0px 50px",
@@ -52,28 +51,31 @@ export default function OrderSortingGrid() {
   const [pageSize, setPageSize] = useState(50);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortModel, setSortModel] = useState();
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
 
   const token = localStorage.getItem("logisfleet_token");
 
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const response = await axios
-        .get(
-          `https://test-api.logisfleet.com/job?currentPage=1&pageSize=${pageSize}&searchQuery=${searchQuery}&fromDate=2021-04-01&toDate=2021-07-31&sortColumn=${
-            sortModel?.field || ""
-          }&sortDir=${sortModel?.sort || ""}`,
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        )
+      const response = await axios.get(
+        `https://test-api.logisfleet.com/job?currentPage=1&pageSize=${pageSize}&searchQuery=${searchQuery}&fromDate=2021-04-01&toDate=2021-07-31&sortColumn=${
+          sortModel?.field || ""
+        }&sortDir=${
+          sortModel?.sort || ""
+        }&fromDate=${fromDate}&toDate=${toDate}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
       setJobData(response.data);
-      setLoading(false)
+      setLoading(false);
     }
     fetchData();
-  }, [pageSize, token, searchQuery, sortModel]);
+  }, [pageSize, token, searchQuery, sortModel, fromDate, toDate]);
 
   useLayoutEffect(() => {
     const children = [
@@ -150,7 +152,12 @@ export default function OrderSortingGrid() {
         }}
       >
         <SearchBar setSearchQuery={setSearchQuery} />
-        <DatePicker />
+        <DatePicker
+          fromDate={fromDate}
+          toDate={toDate}
+          setFromDate={setFromDate}
+          setToDate={setToDate}
+        />
       </div>
       <XGrid
         className={classes.dataGrid}
@@ -166,6 +173,7 @@ export default function OrderSortingGrid() {
         sortModel={sortModel ? [sortModel] : []}
         onSortModelChange={handleSortModelChange}
         hideFooter
+        sortingOrder={["asc", "desc"]}
       />
       <div style={{ display: "flex", alignItems: "baseline" }}>
         <Typography
@@ -192,8 +200,9 @@ export default function OrderSortingGrid() {
             marginTop: "15px",
           }}
         >
-          {[50, 100, 300, 500].map((option) => (
+          {[50, 100, 300, 500].map((option, index) => (
             <Button
+              key={index}
               style={{
                 backgroundColor:
                   option === pageSize ? "rgb(159, 107, 203)" : "#7118be",
