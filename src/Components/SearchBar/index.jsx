@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Paper, IconButton, InputBase } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { makeStyles } from "@material-ui/core/styles";
@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     width: 400,
-    backgroundColor: "inherit",
+    backgroundColor: "inherit !important",
     marginRight: 30,
   },
   input: {
@@ -21,13 +21,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchBar() {
+export default function SearchBar({ setSearchQuery }) {
   const classes = useStyles();
+  const query = useRef("");
+
+  function handleOnSearch(event) {
+    setSearchQuery(query.current);
+  }
+
+  function handleOnChange(event) {
+    query.current = event.target.value;
+  }
 
   return (
     <Paper classes={{ root: classes.root }}>
-      <InputBase className={classes.input} placeholder="Search" />
-      <IconButton type="submit" className={classes.iconButton}>
+      <InputBase
+        className={classes.input}
+        onChange={handleOnChange}
+        placeholder="Search"
+      />
+      <IconButton
+        type="submit"
+        onClick={handleOnSearch}
+        className={classes.iconButton}
+      >
         <SearchIcon />
       </IconButton>
     </Paper>

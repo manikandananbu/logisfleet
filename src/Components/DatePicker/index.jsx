@@ -3,6 +3,7 @@ import { Box, TextField } from "@material-ui/core";
 import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
 import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
 import DesktopDateRangePicker from "@material-ui/lab/DesktopDateRangePicker";
+import moment from 'moment'
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -31,8 +32,6 @@ export default function ResponsiveDateRangePicker() {
         style={{
           alignItems: "end",
         }}
-        startText="Start date"
-        endText="End date"
         value={value}
         onChange={(newValue) => {
           setValue(newValue);
@@ -41,19 +40,31 @@ export default function ResponsiveDateRangePicker() {
           <Fragment>
             <TextField
               classes={{ root: classes.root }}
+              variant="standard"
               InputProps={{
                 classes: { root: classes.text },
               }}
               {...startProps}
+              inputProps={{
+                ...startProps.inputProps,
+                placeholder: moment().format('DD/MM/YYYY'),
+              }}
+              label="Start Date"
               helperText=""
             />
             <Box sx={{ mx: 2 }}> to </Box>
             <TextField
               classes={{ root: classes.root }}
+              variant="standard"
               InputProps={{
                 classes: { root: classes.text },
               }}
               {...endProps}
+              label="End Date"
+              inputProps={{
+                ...endProps.inputProps,
+                placeholder: moment().format('DD/MM/YYYY'),
+              }}
               helperText=""
             />
           </Fragment>

@@ -11,12 +11,16 @@ function Spinner() {
 
 function AuthRoute() {
   const [jobData, setJobData] = useState();
+  const [pageSize, setPageSize] = useState(50);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortModel, setSortModel] = useState();
+
   const token = localStorage.getItem("logisfleet_token");
 
   useEffect(async () => {
     const response = await axios
       .get(
-        `https://test-api.logisfleet.com/job?currentPage=1&pageSize=500&searchQuery&fromDate=2021-04-01&toDate=2021-07-31`,
+        `https://test-api.logisfleet.com/job?currentPage=1&pageSize=${pageSize}&searchQuery=${searchQuery}&fromDate=2021-04-01&toDate=2021-07-31`,
         {
           headers: {
             Authorization: token,
@@ -28,7 +32,7 @@ function AuthRoute() {
       });
 
     setJobData(response.data);
-  }, [token]);
+  }, [pageSize, token, searchQuery]);
 
   return (
     <Fragment>
@@ -39,7 +43,15 @@ function AuthRoute() {
               path="/home"
               name="Home"
               render={(props) => (
-                <DefaultLayout jobData={jobData} {...props} />
+                <DefaultLayout
+                  jobData={jobData}
+                  pageSize={pageSize}
+                  setPageSize={setPageSize}
+                  setSearchQuery={setSearchQuery}
+                  sortModel={sortModel}
+                  setSortModel={setSortModel}
+                  {...props}
+                />
               )}
             />
 

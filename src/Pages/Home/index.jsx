@@ -1,7 +1,13 @@
 import React, { useLayoutEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
-import { Typography, TablePagination, Button } from "@material-ui/core";
+import {
+  Typography,
+  TablePagination,
+  MenuItem,
+  Button,
+  ButtonGroup,
+} from "@material-ui/core";
 import { XGrid } from "@material-ui/x-grid";
 import { makeStyles } from "@material-ui/styles";
 
@@ -60,20 +66,15 @@ const useStyles = makeStyles({
   },
 });
 
-export default function OrderSortingGrid({ jobData }) {
-  const [rowsPerPage, setRowsPerPage] = useState(50);
-  const [page, setPage] = useState(0);
-
+export default function OrderSortingGrid({
+  jobData,
+  pageSize,
+  setPageSize,
+  setSearchQuery,
+  setSortModel,
+  sortModel,
+}) {
   const history = useHistory();
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
 
   useLayoutEffect(() => {
     const children = [
@@ -96,6 +97,12 @@ export default function OrderSortingGrid({ jobData }) {
     localStorage.removeItem("logisfleet_token");
     history.push("./login");
     toast.success("Log out  Successfully");
+  }
+
+  function handleSortModelChange(event) {
+    if (event.sortModel !== sortModel) {
+      setSortModel(event.sortModel[event.sortModel.length - 1]);
+    }
   }
 
   return (
@@ -125,7 +132,7 @@ export default function OrderSortingGrid({ jobData }) {
               borderRadius: "100px",
               backgroundColor: "#7118be",
               marginRight: 10,
-              textTransform: 'capitalize',
+              textTransform: "capitalize",
             }}
             type="submit"
             onClick={handleOnLogOut}
@@ -143,7 +150,7 @@ export default function OrderSortingGrid({ jobData }) {
           margin: "30px 50px 50px",
         }}
       >
-        <SearchBar />
+        <SearchBar setSearchQuery={setSearchQuery} />
         <DatePicker />
       </div>
       <XGrid
@@ -156,17 +163,49 @@ export default function OrderSortingGrid({ jobData }) {
           ...data,
           id: data.jobId,
         }))}
+        // sortingMode="server"
+        // sortModel={sortModel}
+        // onSortModelChange={handleSortModelChange}
         hideFooter
       />
-      <TablePagination
-        component="div"
-        count={(jobData?.data || []).length}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[50, 100, 300, 500]}
-      />
+      <div style={{ display: "flex", alignItems: "baseline" }}>
+        <Typography
+          style={{
+            textAlign: "end",
+            color: "white",
+            marginRight: 10,
+            flexBasis: "100%",
+            fontWeight: 600,
+          }}
+        >
+          Page Size:
+        </Typography>
+        <ButtonGroup
+          onClick={(event) => {
+            setPageSize(Number(event.target.innerText));
+          }}
+          variant="contained"
+          color="primary"
+          aria-label="contained primary button group"
+          style={{
+            float: "right",
+            marginRight: "50px",
+            marginTop: "15px",
+          }}
+        >
+          {[50, 100, 300, 500].map((option) => (
+            <Button
+              style={{
+                backgroundColor:
+                  option === pageSize ? "rgb(159, 107, 203)" : "#7118be",
+                borderColor: "white",
+              }}
+            >
+              {option}
+            </Button>
+          ))}
+        </ButtonGroup>
+      </div>
     </div>
   );
 }
