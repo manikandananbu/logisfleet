@@ -1,38 +1,14 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
-import {
-  Typography,
-  TablePagination,
-  MenuItem,
-  Button,
-  ButtonGroup,
-} from "@material-ui/core";
+import { Typography, Button, ButtonGroup } from "@material-ui/core";
 import { XGrid } from "@material-ui/x-grid";
 import { makeStyles } from "@material-ui/styles";
-
+import axios from "axios";
 import DatePicker from "../../Components/DatePicker";
 import SearchBar from "../../Components/SearchBar";
 
 import { columns } from "./constants";
-
-const rows = [
-  {
-    id: 1,
-    customerName: "Jane",
-    vehicleName: "Carter",
-  },
-  {
-    id: 2,
-    customerName: "Jack",
-    vehicleName: "Smith",
-  },
-  {
-    id: 3,
-    customerName: "Gill",
-    vehicleName: "Martin",
-  },
-];
 
 const useStyles = makeStyles({
   root: {
@@ -66,15 +42,37 @@ const useStyles = makeStyles({
   },
 });
 
-export default function OrderSortingGrid({
-  jobData,
-  pageSize,
-  setPageSize,
-  setSearchQuery,
-  setSortModel,
-  sortModel,
-}) {
+export default function OrderSortingGrid() {
   const history = useHistory();
+
+  const [jobData, setJobData] = useState();
+  const [pageSize, setPageSize] = useState(50);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortModel, setSortModel] = useState();
+
+  const token = localStorage.getItem("logisfleet_token");
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await axios
+        .get(
+          `https://test-api.logisfleet.com/job?currentPage=1&pageSize=${pageSize}&searchQuery=${searchQuery}&fromDate=2021-04-01&toDate=2021-07-31&sortColumn=${
+            sortModel?.field || ""
+          }&sortDir=${sortModel?.sort || ""}`,
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        )
+        .then((res) => {
+          return res;
+        });
+
+      setJobData(response.data);
+    }
+    fetchData();
+  }, [pageSize, token, searchQuery, sortModel]);
 
   useLayoutEffect(() => {
     const children = [
@@ -163,9 +161,9 @@ export default function OrderSortingGrid({
           ...data,
           id: data.jobId,
         }))}
-        // sortingMode="server"
-        // sortModel={sortModel}
-        // onSortModelChange={handleSortModelChange}
+        sortingMode="server"
+        sortModel={sortModel ? [sortModel] : []}
+        onSortModelChange={handleSortModelChange}
         hideFooter
       />
       <div style={{ display: "flex", alignItems: "baseline" }}>
