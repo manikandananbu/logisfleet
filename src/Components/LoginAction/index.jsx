@@ -2,9 +2,8 @@ import React from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import {
-  Box,
   Button,
-  Grid,
+  Box,
   InputAdornment,
   TextField,
   Typography,
@@ -22,7 +21,7 @@ const Schema = Yup.object().shape({
 export default function LoginAction({ onLogin }) {
   const classes = useStyles();
   return (
-    <Grid item xs={6}>
+    <div className={classes.container}>
       <Formik
         initialValues={{
           email: "",
@@ -34,7 +33,7 @@ export default function LoginAction({ onLogin }) {
             setSubmitting(false);
           }, 500);
 
-          onLogin(values)
+          onLogin(values);
         }}
       >
         {(props) => {
@@ -48,7 +47,7 @@ export default function LoginAction({ onLogin }) {
           } = props;
           return (
             <form onSubmit={handleSubmit}>
-              <Box display="grid" top="15%" position="absolute" right="10%">
+              <Box display="flex" flexDirection= "column">
                 <Typography className={classes.typography} variant="h4">
                   Sign into your account
                 </Typography>
@@ -123,6 +122,6 @@ export default function LoginAction({ onLogin }) {
           );
         }}
       </Formik>
-    </Grid>
+    </div>
   );
 }

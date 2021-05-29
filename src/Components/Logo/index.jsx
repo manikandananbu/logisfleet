@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Grid,
   Typography,
 } from "@material-ui/core";
 
@@ -13,7 +12,7 @@ export default function Logo() {
   const classes = useStyles();
 
   return (
-    <Grid item xs={6}>
+    <div className={classes.container}>
       <img
         src={loginBackground}
         className={classes.loginBackground}
@@ -28,16 +27,7 @@ export default function Logo() {
       >
         Welcome back!
       </Typography>
-      <Typography
-        className={classes.subtitle}
-        style={{
-          fontWeight: 500,
-        }}
-        variant="subtitle1"
-      >
-        Let's login to your forum account
-      </Typography>
       <img src={login} className={classes.image} alt="Logo" />
-    </Grid>
+    </div>
   );
 }

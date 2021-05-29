@@ -2,7 +2,9 @@ import React, { Fragment, useEffect } from "react";
 import axios from "axios";
 import { useHistory, Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
-import Grid from "@material-ui/core/Grid";
+import {
+  Box,
+} from "@material-ui/core";
 
 import Logo from "../../Components/Logo";
 import LoginAction from "../../Components/LoginAction";
@@ -33,10 +35,10 @@ export default function Login() {
       {localStorage.getItem("logisfleet_token") ? (
         <Redirect to="/home" />
       ) : (
-        <Grid container>
+        <Box display='flex' height= '100vh'>
           <Logo />
           <LoginAction onLogin={onLogin} />
-        </Grid>
+        </Box>
       )}
     </Fragment>
   );

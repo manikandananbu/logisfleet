@@ -1,24 +1,21 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
+  container: {
+    flexBasis: "50%",
+    height: "100%",
+  },
   login: {
     margin: 20,
   },
   loginBackground: {
     width: "100%",
+    height: "100%",
   },
   logoTypography: {
     position: "absolute",
-    top: "10%",
+    top: "15%",
     color: "white",
-    width: "35%",
-    left: "5%",
-  },
-  subtitle: {
-    position: "absolute",
-    top: "20%",
-    color: "white",
-    fontWeight: 500,
     width: "35%",
     left: "5%",
   },
@@ -31,4 +28,4 @@ const useStyles = makeStyles({
   },
 });
 
-export default useStyles
+export default useStyles;

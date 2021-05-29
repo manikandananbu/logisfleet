@@ -1,11 +1,19 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
+  container: {
+    flexBasis: "50%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 20,
+  },
   typography: {
     fontWeight: 600,
   },
   textField: {
-    marginTop: 40,
+    marginTop: '40px !important',
     "& .MuiFormLabel-root": {
       fontWeight: 600,
       fontSize: "22px",
@@ -30,9 +38,8 @@ const useStyles = makeStyles({
     marginLeft: "30% !important",
   },
   error: {
-    fontSize: 14,
     color: 'red',
-    marginTop: 20,
+    marginTop: '20px !important',
   }
 });
 
