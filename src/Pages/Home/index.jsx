@@ -18,8 +18,12 @@ export default function OrderSortingGrid() {
   const [pageSize, setPageSize] = useState(50);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortModel, setSortModel] = useState();
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
+  const [fromDate, setFromDate] = useState(
+    moment().startOf("month").format("YYYY-MM-DD")
+  );
+  const [toDate, setToDate] = useState(
+    moment().endOf("month").format("YYYY-MM-DD")
+  );
 
   const token = localStorage.getItem("logisfleet_token");
 
