@@ -5,16 +5,30 @@ import useStyles from "./styles";
 
 const PAGINATION_OPTIONS = [50, 100, 300, 500];
 
-export default function ButtonGroup({ pageSize, setPageSize }) {
+export default function ButtonGroup({
+  page,
+  pageSize,
+  setPage,
+  setPageSize,
+  totalRecords,
+}) {
   const classes = useStyles();
+
+  function handleOnChange(event) {
+    const selectedPageSize = Number(event.target.innerText);
+    const maxPage = Math.ceil(totalRecords / selectedPageSize);
+
+    if (maxPage < page) {
+      setPage(maxPage);
+    }
+    setPageSize(selectedPageSize);
+  }
 
   return (
     <MuiButtonGroup
       classes={{ root: classes.buttonGroup }}
       aria-label="contained primary button group"
-      onClick={(event) => {
-        setPageSize(Number(event.target.innerText));
-      }}
+      onClick={handleOnChange}
       variant="contained"
     >
       {PAGINATION_OPTIONS.map((option, index) => (

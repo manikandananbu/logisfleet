@@ -1,5 +1,6 @@
 import React, { useLayoutEffect, useEffect, useState } from "react";
 import axios from "axios";
+import moment from "moment";
 
 // components
 import DatePicker from "../../Components/DatePicker";
@@ -15,6 +16,7 @@ import useStyles from "./styles";
 export default function OrderSortingGrid() {
   const [loading, setLoading] = useState(false);
   const [jobData, setJobData] = useState();
+  const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(50);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortModel, setSortModel] = useState();
@@ -32,7 +34,7 @@ export default function OrderSortingGrid() {
       setLoading(true);
       await axios
         .get(
-          `https://test-api.logisfleet.com/job?currentPage=1&pageSize=${pageSize}&searchQuery=${searchQuery}&sortColumn=${
+          `https://test-api.logisfleet.com/job?currentPage=${page}&pageSize=${pageSize}&searchQuery=${searchQuery}&sortColumn=${
             sortModel?.field || ""
           }&sortDir=${
             sortModel?.sort || ""
@@ -52,7 +54,7 @@ export default function OrderSortingGrid() {
         });
     }
     fetchData();
-  }, [pageSize, token, searchQuery, sortModel, fromDate, toDate]);
+  }, [pageSize, page, token, searchQuery, sortModel, fromDate, toDate]);
 
   useLayoutEffect(() => {
     const children = [
@@ -91,7 +93,13 @@ export default function OrderSortingGrid() {
         setSortModel={setSortModel}
         sortModel={sortModel}
       />
-      <Pagination pageSize={pageSize} setPageSize={setPageSize} />
+      <Pagination
+        page={page}
+        pageSize={pageSize}
+        setPage={setPage}
+        setPageSize={setPageSize}
+        totalRecords={jobData?.total || 0}
+      />
       <Spinner loading={loading}></Spinner>
     </div>
   );
